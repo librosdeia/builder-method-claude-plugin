@@ -1,4 +1,4 @@
-// Dev-only: inline the renderer and rough.js into assets/progress.html.
+// Dev-only: inline the renderer into assets/progress.html.
 // Usage: node scripts/build-progress.mjs [--check]
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 
@@ -11,7 +11,6 @@ const toScript = (src) => src
 export function buildProgress() {
   const renderer = [toScript(read('src/progress/i18n.mjs')), toScript(read('src/progress/render.mjs'))].join('\n');
   return read('src/progress/page.template.html')
-    .replace('/*@ROUGH@*/', () => read('assets/vendor/rough-4.6.6.min.js'))
     .replace('/*@RENDERER@*/', () => renderer);
 }
 

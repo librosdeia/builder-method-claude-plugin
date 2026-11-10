@@ -133,3 +133,29 @@ export function renderError(lang) {
   const t = strings(lang);
   return `<section class="error"><h1>${escapeHtml(t.errorTitle)}</h1><p>${escapeHtml(t.errorBody)}</p></section>`;
 }
+
+// Deterministic "hand-drawn" rectangle outline: two jittered passes, seeded.
+function prng(seed) {
+  let a = seed >>> 0;
+  return () => {
+    a = (a + 0x6d2b79f5) >>> 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+export function sketchPath(w, h, seed) {
+  const rnd = prng(seed);
+  const j = (n) => (rnd() - 0.5) * 2 * n;
+  const f = (n) => Math.max(0, n).toFixed(1);
+  const pass = (m) => {
+    const pts = [
+      [2 + j(m), 2 + j(m)], [w / 2 + j(m * 4), 2 + j(m)], [w - 2 + j(m), 2 + j(m)],
+      [w - 2 + j(m), h / 2 + j(m * 4)], [w - 2 + j(m), h - 2 + j(m)], [w / 2 + j(m * 4), h - 2 + j(m)],
+      [2 + j(m), h - 2 + j(m)], [2 + j(m), h / 2 + j(m * 4)], [2 + j(m), 2 + j(m)],
+    ];
+    return `M${f(pts[0][0])} ${f(pts[0][1])} ` + pts.slice(1).map(([x, y]) => `L${f(x)} ${f(y)}`).join(' ');
+  };
+  return `${pass(1.6)} ${pass(1.2)}`;
+}

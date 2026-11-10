@@ -29,7 +29,7 @@ The plugin is:
 4. **Every user flow has an ID and can be traced from start to end** (PRD → plan → tests → validation). "What's missing" is always concrete.
 5. **The user can always undo.** Git starts at the beginning of Build, and every finished task leaves a checkpoint.
 6. **Skills describe behavior; they don't depend on built-in commands.** Skills never ask the user to type `/plan` or `/goal`. They say "plan first and ask for approval" or "keep going until every task is done and tested".
-7. **The progress view is deterministic.** `progress.html` contains its own renderer; skills only write the data into it. The model never draws it freehand.
+7. **The progress view is deterministic.** `progress.html` contains its own renderer and is never edited; skills only rewrite the small `progress-data.js` beside it. The model never draws it freehand.
 8. **No runtime required on the user's machine.** The plugin ships no `bin/` (Cowork and chat refuse plugins that have one), declares no `userConfig` (Cowork doesn't prompt for it), and needs neither Node nor Python. The only executable piece is a POSIX `sh` hook. Node is a dev dependency of this repo only, for tests.
 
 ## 3. Commands
@@ -68,7 +68,8 @@ builder/
   05-validation.md
   06-ship.md
   decisions.md        decisions Claude made during Build that the user should review
-  progress.html       generated; do not edit
+  progress.html       copied once from the plugin; do not edit
+  progress-data.js    the state the page shows; rewritten by skills
 ```
 
 Every `.md` output starts with frontmatter:
@@ -128,7 +129,7 @@ Rules:
 - Skills update `state.json` at the end of every step, not only at the end of a phase, so an interrupted session resumes at the right step.
 - `debt` is derived from the files' `review: unreviewed` frontmatter and kept in sync by the skills. When the user reviews and approves a file, its entry is removed.
 - The schema ships as `skills/_shared/state.schema.json`. Skills follow `skills/_shared/state-rules.md` when writing. The repo's test suite validates every fixture against the schema; users need no validator.
-- After every write to `state.json`, the skill also copies the same JSON into the `<script id="builder-state" type="application/json">` block of `builder/progress.html` (§11).
+- After every write to `state.json`, the skill also rewrites `builder/progress-data.js` as `window.BUILDER_STATE = <state JSON>;` (§11).
 
 ## 6. Gates
 
@@ -321,8 +322,8 @@ Symbols: `✔` done · `◐` in progress · `○` not started · `!` skipped (ge
 
 ### `builder/progress.html`
 
-- A copy of `assets/progress.html` from the plugin. The renderer is JavaScript inside the page, so it runs in the browser. The page reads its data from a `<script id="builder-state" type="application/json">` block. `/builder:start` copies the template; afterwards, skills only replace the contents of that block with the current `state.json`. No runtime is needed, and identical state always draws an identical page.
-- Visual language of the method's presentation: six hand-drawn cards (rough.js, MIT, vendored inline so it works offline) and the "repeat the cycle ↺" arrow between Build and Iterate.
+- A copy of `assets/progress.html` from the plugin. The renderer is JavaScript inside the page, so it runs in the browser. The page loads its data with `<script src="progress-data.js">`, which works offline from `file://` (unlike `fetch`). `/builder:start` copies the page once; afterwards, skills only rewrite `progress-data.js` (`window.BUILDER_STATE = …;`), a few KB, so the large page never has to be read or rewritten. No runtime is needed, and identical state always draws an identical page. (Changed during implementation: the first design embedded the data in the page itself, but each update then meant re-reading a 45 KB file, and in the eval sandbox the shell copy was refused.)
+- Visual language of the method's presentation: six hand-drawn cards (a small seeded sketch function in the renderer, inspired by rough.js; no third-party code, so the page stays under 20 KB and can be copied with file tools) and the "repeat the cycle ↺" arrow between Build and Iterate.
 - Each card shows: its status, a progress bar for its steps, the deliverable as a link to its file, what's missing in plain language, and a debt badge if the file is unreviewed. Not-applicable cards are greyed out.
 - Below the cards: a flow table (flow → tasks → validation status), the number of pending decisions, and the cycle number.
 - It works in both light and dark mode, it is a single self-contained file, and its strings come in English and Spanish, following `profile.language`.
@@ -350,14 +351,14 @@ builder-method-claude-plugin/
     _shared/           gates.md, state-rules.md, tone.md, state.schema.json (referenced by every skill)
   agents/              prd-reviewer.md, planner.md, implementer.md, qa.md, security-auditor.md
   hooks/               hooks.json, session-start.sh
-  assets/              progress.html (template with inline renderer and vendored rough.js)
+  assets/              progress.html (template with inline renderer; < 20 KB)
   evals/               claude plugin eval cases (see §13)
   test/                node:test suites for the renderer, schema fixtures and hook (dev only)
   package.json         dev-only: test script, ajv; never needed by users
   docs/
     en/                getting-started.md, the-method.md, commands.md, writing-a-recipe.md
     es/                translations of the same files
-  README.md · README.es.md · LICENSE (MIT) · NOTICE (third-party: rough.js MIT) · CHANGELOG.md
+  README.md · README.es.md · LICENSE (MIT) · NOTICE · CHANGELOG.md
 ```
 
 ## 13. Acceptance for v0.1

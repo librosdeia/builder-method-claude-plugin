@@ -32,6 +32,6 @@ test('LICENSE is the MIT file already on origin/main', () => {
   assert.match(l, /Copyright \(c\) 2026 Libros de ia\.com/);
 });
 
-test('NOTICE credits rough.js', () => {
-  assert.match(text('NOTICE'), /rough\.js/);
+test('NOTICE states the third-party position', () => {
+  assert.match(text('NOTICE'), /bundles no third-party code/);
 });

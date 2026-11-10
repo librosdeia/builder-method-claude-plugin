@@ -39,12 +39,21 @@ updated: <YYYY-MM-DD>
 
 Keep `debt` in sync with the frontmatter: an `unreviewed` file has exactly one `debt` entry for its phase.
 
-## Updating progress.html
+## Updating the progress page
 
-After every write to `state.json`, update `builder/progress.html`:
+The visual page has two files in `builder/`:
+- `progress.html`: the page itself. It is copied once from the plugin and never edited.
+- `progress-data.js`: the data the page shows. It is rewritten after every state change.
 
-1. If `builder/progress.html` doesn't exist, copy `${CLAUDE_PLUGIN_ROOT}/assets/progress.html` to it unchanged.
-2. Replace **only** the contents of `<script id="builder-state" type="application/json">…</script>` with the full current JSON of `state.json`. Inside that block, write every `<` as `\u003c`, so a name containing `</script>` can't break the page. The JSON stays valid.
-3. Never edit anything else in that file. The page draws itself in the browser.
+After every write to `state.json`, do both of these. This is required, not optional: the user relies on this page to see where they are.
+
+1. If `builder/progress.html` doesn't exist, copy `${CLAUDE_PLUGIN_ROOT}/assets/progress.html` there unchanged. With a shell: `cp "${CLAUDE_PLUGIN_ROOT}/assets/progress.html" builder/progress.html`. If the shell is unavailable or the command is refused, use the file tools instead: Read the template (about 18 KB) and Write an identical copy to `builder/progress.html`. Don't skip this step. Never edit this file afterwards.
+2. Write `builder/progress-data.js` (overwrite it with the Write tool) with exactly one statement, the full current JSON of `state.json`:
+
+   ```js
+   window.BUILDER_STATE = { ...the state.json content... };
+   ```
+
+Before finishing, check that both files exist.
 
 If `state.json` is missing or unreadable, rebuild it from the files in `builder/` (their frontmatter and content), tell the user you did so, and continue.

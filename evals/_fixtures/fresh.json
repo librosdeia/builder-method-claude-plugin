@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "pluginVersion": "0.1.0",
+  "project": { "name": "demo-app", "createdAt": "2026-11-10", "hasFrontend": null },
+  "profile": { "codingExperience": "none", "language": "en" },
+  "cycle": 1,
+  "currentPhase": "idea",
+  "phases": {
+    "idea": { "status": "not_started" },
+    "prd": { "status": "not_started" },
+    "design": { "status": "not_started" },
+    "build": { "status": "not_started" },
+    "iterate": { "status": "not_started" },
+    "ship": { "status": "not_started" }
+  },
+  "flows": [],
+  "tasks": [],
+  "decisions": { "pending": 0, "total": 0 },
+  "debt": []
+}

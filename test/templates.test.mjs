@@ -84,9 +84,9 @@ test('gates.md covers every gated phase and the two choices', () => {
 
 test('state-rules.md documents the progress.html contract and escaping', () => {
   const r = read('skills/_shared/state-rules.md');
-  assert.match(r, /id="builder-state"/);
+  assert.match(r, /builder\/progress-data\.js/);
+  assert.match(r, /window\.BUILDER_STATE = /);
   assert.match(r, /\$\{CLAUDE_PLUGIN_ROOT\}\/assets\/progress\.html/);
-  assert.match(r, /\\u003c/);
   for (const s of ['explore', 'clarify', 'prototype', 'setup', 'triage', 'record']) assert.ok(r.includes(s), s);
 });
 

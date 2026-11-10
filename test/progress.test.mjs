@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
-import { summarize, renderProgress, renderError, escapeHtml } from '../src/progress/render.mjs';
+import { summarize, renderProgress, renderError, escapeHtml, sketchPath } from '../src/progress/render.mjs';
 import { STRINGS } from '../src/progress/i18n.mjs';
 
 const root = new URL('../', import.meta.url);
@@ -87,10 +87,25 @@ test('assets/progress.html is built from the current sources', () => {
   execFileSync(process.execPath, [new URL('scripts/build-progress.mjs', root).pathname, '--check']);
 });
 
-test('assets/progress.html has exactly one builder-state block', () => {
+test('assets/progress.html loads its data from progress-data.js', () => {
   const page = readFileSync(new URL('assets/progress.html', root), 'utf8');
-  assert.equal(page.match(/<script id="builder-state" type="application\/json">/g).length, 1);
-  assert.match(page, /rough\.js 4\.6\.6|roughjs/i);
+  assert.equal(page.match(/<script src="progress-data\.js"><\/script>/g).length, 1);
+  assert.doesNotMatch(page, /id="builder-state"/);
+  assert.match(page, /window\.BUILDER_STATE/);
+});
+
+test('assets/progress.html is small enough to copy with file tools', () => {
+  const page = readFileSync(new URL('assets/progress.html', root), 'utf8');
+  assert.ok(page.length < 20000, `page is ${page.length} bytes`);
+  assert.doesNotMatch(page, /roughjs|rough\.js/i);
+});
+
+test('sketchPath draws a deterministic hand-drawn rectangle', () => {
+  const a = sketchPath(300, 200, 11);
+  assert.equal(a, sketchPath(300, 200, 11));
+  assert.notEqual(a, sketchPath(300, 200, 12));
+  assert.match(a, /^M[\d.]+ [\d.]+ /);
+  for (const n of a.match(/-?[\d.]+/g).map(Number)) assert.ok(n >= -4 && n <= 304, `point ${n} out of bounds`);
 });
 
 test('not-applicable card states it once and explains why', () => {
