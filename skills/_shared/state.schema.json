@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/librosdeia/builder-method-claude-plugin/state.schema.json",
+  "title": "Builder Method project state (builder/state.json) v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "pluginVersion", "project", "profile", "cycle", "currentPhase", "phases", "flows", "tasks", "decisions", "debt"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "pluginVersion": { "type": "string" },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "createdAt", "hasFrontend"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "createdAt": { "type": "string" },
+        "hasFrontend": { "type": ["boolean", "null"] }
+      }
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["codingExperience", "language"],
+      "properties": {
+        "codingExperience": { "enum": ["none", "some", "developer"] },
+        "language": { "type": "string", "pattern": "^[a-z]{2}(-[A-Z]{2})?$" }
+      }
+    },
+    "cycle": { "type": "integer", "minimum": 1 },
+    "currentPhase": { "$ref": "#/$defs/phaseId" },
+    "phases": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["idea", "prd", "design", "build", "iterate", "ship"],
+      "properties": {
+        "idea": { "$ref": "#/$defs/phase" },
+        "prd": { "$ref": "#/$defs/phase" },
+        "design": { "$ref": "#/$defs/phase" },
+        "build": { "$ref": "#/$defs/phase" },
+        "iterate": { "$ref": "#/$defs/phase" },
+        "ship": { "$ref": "#/$defs/phase" }
+      }
+    },
+    "flows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "acceptance", "tasks", "validation"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^F\\d+$" },
+          "name": { "type": "string" },
+          "acceptance": { "type": "array", "items": { "type": "string" } },
+          "tasks": { "type": "array", "items": { "type": "string", "pattern": "^T\\d+$" } },
+          "validation": { "enum": ["pending", "pass", "fail"] }
+        }
+      }
+    },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "title", "flows", "status", "cycle"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^T\\d+$" },
+          "title": { "type": "string" },
+          "flows": { "type": "array", "items": { "type": "string", "pattern": "^F\\d+$" } },
+          "status": { "enum": ["pending", "in_progress", "done"] },
+          "cycle": { "type": "integer", "minimum": 1 },
+          "checkpoint": { "type": "string" }
+        }
+      }
+    },
+    "decisions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pending", "total"],
+      "properties": {
+        "pending": { "type": "integer", "minimum": 0 },
+        "total": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "debt": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["phase", "reason", "since"],
+        "properties": {
+          "phase": { "$ref": "#/$defs/phaseId" },
+          "reason": { "enum": ["generated_unreviewed"] },
+          "since": { "type": "string" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "phaseId": { "enum": ["idea", "prd", "design", "build", "iterate", "ship"] },
+    "phase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": { "enum": ["not_started", "in_progress", "done", "skipped_generated", "not_applicable"] },
+        "review": { "enum": ["reviewed", "unreviewed"] },
+        "steps": {
+          "type": "object",
+          "additionalProperties": { "enum": ["pending", "in_progress", "done", "skipped"] }
+        }
+      }
+    }
+  }
+}

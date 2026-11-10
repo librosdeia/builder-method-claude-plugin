@@ -1,0 +1,197 @@
+{
+  "schemaVersion": 1,
+  "pluginVersion": "0.1.0",
+  "project": {
+    "name": "booking-app",
+    "createdAt": "2026-11-10",
+    "hasFrontend": true
+  },
+  "profile": {
+    "codingExperience": "none",
+    "language": "en"
+  },
+  "cycle": 1,
+  "currentPhase": "ship",
+  "phases": {
+    "idea": {
+      "status": "done",
+      "review": "reviewed",
+      "steps": {
+        "explore": "done",
+        "scope": "done",
+        "summarize": "done"
+      }
+    },
+    "prd": {
+      "status": "done",
+      "review": "reviewed",
+      "steps": {
+        "clarify": "done",
+        "write": "done",
+        "review": "done",
+        "polish": "skipped"
+      }
+    },
+    "design": {
+      "status": "done",
+      "review": "reviewed",
+      "steps": {
+        "prototype": "done",
+        "validate": "done",
+        "link": "done"
+      }
+    },
+    "build": {
+      "status": "done",
+      "steps": {
+        "plan": "done",
+        "setup": "done",
+        "build": "done"
+      }
+    },
+    "iterate": {
+      "status": "done",
+      "steps": {
+        "validate": "done",
+        "decisions": "done",
+        "triage": "done",
+        "loop": "skipped"
+      }
+    },
+    "ship": {
+      "status": "not_started"
+    }
+  },
+  "flows": [
+    {
+      "id": "F1",
+      "name": "Book a slot",
+      "acceptance": [
+        "When a client picks a free slot, then the booking is saved and confirmed on screen"
+      ],
+      "tasks": [
+        "T3",
+        "T4"
+      ],
+      "validation": "pass"
+    },
+    {
+      "id": "F2",
+      "name": "Cancel a booking",
+      "acceptance": [
+        "When a client cancels, then the slot becomes free again"
+      ],
+      "tasks": [
+        "T5",
+        "T6"
+      ],
+      "validation": "pass"
+    },
+    {
+      "id": "F3",
+      "name": "See the day's agenda",
+      "acceptance": [
+        "When the owner opens the agenda, then today's bookings are listed by time"
+      ],
+      "tasks": [
+        "T7",
+        "T8",
+        "T9"
+      ],
+      "validation": "pass"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "T1",
+      "title": "Project skeleton",
+      "flows": [],
+      "status": "done",
+      "cycle": 1,
+      "checkpoint": "a1b2c31"
+    },
+    {
+      "id": "T2",
+      "title": "Database schema",
+      "flows": [],
+      "status": "done",
+      "cycle": 1,
+      "checkpoint": "a1b2c32"
+    },
+    {
+      "id": "T3",
+      "title": "Booking form",
+      "flows": [
+        "F1"
+      ],
+      "status": "done",
+      "cycle": 1,
+      "checkpoint": "a1b2c33"
+    },
+    {
+      "id": "T4",
+      "title": "Booking confirmation",
+      "flows": [
+        "F1"
+      ],
+      "status": "done",
+      "cycle": 1,
+      "checkpoint": "a1b2c34"
+    },
+    {
+      "id": "T5",
+      "title": "Cancel endpoint",
+      "flows": [
+        "F2"
+      ],
+      "status": "done",
+      "cycle": 1,
+      "checkpoint": "a1b2c35"
+    },
+    {
+      "id": "T6",
+      "title": "Cancel button",
+      "flows": [
+        "F2"
+      ],
+      "status": "done",
+      "cycle": 1,
+      "checkpoint": "b2c3d4e"
+    },
+    {
+      "id": "T7",
+      "title": "Agenda query",
+      "flows": [
+        "F3"
+      ],
+      "status": "done",
+      "cycle": 1,
+      "checkpoint": "b2c3d4e"
+    },
+    {
+      "id": "T8",
+      "title": "Agenda screen",
+      "flows": [
+        "F3"
+      ],
+      "status": "done",
+      "cycle": 1,
+      "checkpoint": "b2c3d4e"
+    },
+    {
+      "id": "T9",
+      "title": "Sample data",
+      "flows": [
+        "F3"
+      ],
+      "status": "done",
+      "cycle": 1,
+      "checkpoint": "b2c3d4e"
+    }
+  ],
+  "decisions": {
+    "pending": 0,
+    "total": 5
+  },
+  "debt": []
+}
