@@ -58,12 +58,19 @@ test('a damaged state never breaks the session', () => {
   assert.match(r.stdout, /^This project follows the Builder Method plugin/);
 });
 
-test('caps very large state files at 400 lines', () => {
+test('keeps normal states whole and flags truncation of huge ones', () => {
   const dir = project();
-  writeFileSync(join(dir, 'builder/state.json'), Array.from({ length: 1000 }, (_, i) => `line ${i}`).join('\n'));
+  writeFileSync(join(dir, 'builder/state.json'), Array.from({ length: 3000 }, (_, i) => `line ${i}`).join('\n'));
   const r = run(dir);
-  assert.match(r.stdout, /line 399\n/);
-  assert.doesNotMatch(r.stdout, /line 400\b/);
+  assert.match(r.stdout, /line 1999\n/);
+  assert.doesNotMatch(r.stdout, /line 2000\b/);
+  assert.match(r.stdout, /truncated — read builder\/state\.json for the rest/);
+});
+
+test('does not flag truncation for a normal state', () => {
+  const dir = project();
+  copyFileSync(fixture, join(dir, 'builder/state.json'));
+  assert.doesNotMatch(run(dir).stdout, /truncated/);
 });
 
 test('the hook script is executable', () => {

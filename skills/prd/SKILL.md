@@ -31,7 +31,7 @@ Plan before writing: summarise what you understood in a short list and get a yes
 
 ## Step 2 · write
 
-Write `builder/02-prd.md` from `${CLAUDE_PLUGIN_ROOT}/skills/prd/templates/02-prd.md`. Translate the section headings to the user's language. Keep these markers exactly, because other phases rely on them:
+If the file already exists, follow "Existing outputs" in `state-rules.md` (revise it, never overwrite the user's edits). Otherwise: write `builder/02-prd.md` from `${CLAUDE_PLUGIN_ROOT}/skills/prd/templates/02-prd.md`. Translate the section headings to the user's language. Keep these markers exactly, because other phases rely on them:
 - each flow heading is `### F<n> — <name>` (F1, F2…; the long dash —);
 - each flow has an acceptance list. In English it is written `Acceptance:` with items of the form `When <situation>, then <result>.` In other languages, translate the words but keep the same structure.
 

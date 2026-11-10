@@ -1,5 +1,5 @@
 ---
 type: regex
-target: { source: file, path: builder/state.json }
-pattern: '"id":\s*"F2"[^}]*"validation":\s*"fail"'
+target: { source: file, path: builder/05-validation.md }
+pattern: '## F2[^\n]*\n[\s\S]*?Result:\s*fail'
 ---

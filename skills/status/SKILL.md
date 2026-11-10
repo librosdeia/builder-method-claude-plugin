@@ -5,13 +5,13 @@ description: Show where a Builder Method project stands — which phases are don
 
 # Project status
 
-Don't change any phase or project file. The one thing you always write is the progress page (step 3), so it matches the state.
+Don't change any phase or project file, except to repair a damaged state (step 1). The one thing you always write is the progress page (step 3), so it matches the state.
 
 Read `${CLAUDE_PLUGIN_ROOT}/skills/_shared/state-rules.md` and `${CLAUDE_PLUGIN_ROOT}/skills/_shared/tone.md`.
 
 ## Steps
 
-1. Read `builder/state.json`. If it's missing or damaged, say so, and offer to rebuild it from the `builder/*.md` files (only if the user agrees).
+1. Read `builder/state.json`. If it's missing or damaged, follow "Damaged or missing state" in `state-rules.md`.
 2. Print the summary below.
 3. Always refresh the progress page (`builder/progress-data.js`, plus `builder/progress.html` if it's missing), as `state-rules.md` explains. Then tell the user they can open `builder/progress.html` in a browser.
 

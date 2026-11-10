@@ -42,7 +42,7 @@ Walk through each flow with the user on the design: "F1 — Book a slot: tap Cut
 
 ## 3 · link
 
-Write `builder/03-design.md` from `${CLAUDE_PLUGIN_ROOT}/skills/design/templates/03-design.md`, with:
+If the file already exists, follow "Existing outputs" in `state-rules.md` (revise it, never overwrite the user's edits). Otherwise: write `builder/03-design.md` from `${CLAUDE_PLUGIN_ROOT}/skills/design/templates/03-design.md`, with:
 - the option used and the link or path;
 - for every flow (`F1`, `F2`…), the screens that show it.
 

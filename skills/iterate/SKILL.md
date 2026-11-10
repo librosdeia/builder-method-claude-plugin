@@ -44,9 +44,10 @@ Suggest a classification. The user decides.
 
 If "fix now" has items:
 1. Increase `state.cycle` by 1.
-2. Add one task per fix to `builder/04-plan.md`, under a heading `## Cycle <new cycle> — fixes`, in the plan format (`### T<next n> — <title>`, `Covers: <flows>`, `Check:`, `Model:`, `Cycle: <new cycle>`). Add them to `state.tasks` with `cycle: <new cycle>`.
+2. Add one task per fix to `builder/04-plan.md`, under a heading `## Cycle <new cycle> — fixes`, in exactly the plan format, one line per field: `### T<next n> — <title>`, then `Covers: <flows>`, `Check: …`, `Model: …`, and `Cycle: <new cycle>`. Add them to `state.tasks` with `cycle: <new cycle>`.
 3. Set Build back to `in_progress`, with its `build` step `pending`, and set `currentPhase` to `build`. Leave Iterate `in_progress`.
-4. Tell the user what will be fixed, and continue with `/builder:build`, unless they asked you to stop after planning.
+4. Prepare Iterate for re-checking the fixes: set every step in `phases.iterate.steps` back to `pending`, and set every flow whose validation is `fail` (and any flow a fix touches) back to `pending`. The next validation pass rewrites `05-validation.md` for the new cycle, so the "fix now" items are not planned twice.
+5. Tell the user what will be fixed, and continue with `/builder:build`, unless they asked you to stop after planning.
 
 If "fix now" is empty, every flow is `pass`, and no decisions are pending:
 - set `review: reviewed` in `05-validation.md`, and mark Iterate and its steps `done` (`loop` is `skipped`);

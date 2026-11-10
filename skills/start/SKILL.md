@@ -15,6 +15,8 @@ Read these first and follow them throughout:
 
 If `builder/state.json` already exists in the current folder, **don't change anything**. Tell the user which project this is and where it stands (phase and step), and offer to continue with `/builder:next`. Stop here.
 
+If there's no `state.json` but `builder/*.md` files exist (e.g. `01-idea.md`, `02-prd.md`), this is an existing project whose state was lost. Don't start fresh: rebuild the state as "Damaged or missing state" in `state-rules.md` explains, then offer `/builder:next`. Stop here.
+
 ## 2. Get to know the user
 
 Ask, together in one short message (skip anything the user already told you):

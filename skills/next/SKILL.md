@@ -12,7 +12,7 @@ Read and follow:
 
 ## 1. Read the state
 
-- If there is no `builder/state.json`, but there are `builder/*.md` files, rebuild the state from them (see `state-rules.md`).
+- If `builder/state.json` is missing or damaged, follow "Damaged or missing state" in `state-rules.md`.
 - If there is nothing at all, offer to start a project with `/builder:start`, and stop.
 
 ## 2. Show the summary

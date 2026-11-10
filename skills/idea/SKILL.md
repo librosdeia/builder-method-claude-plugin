@@ -38,7 +38,7 @@ Agree on what the **first version does not do**. Propose a short list (payments,
 
 ## Step 3 · summarize
 
-Write `builder/01-idea.md` from the template `${CLAUDE_PLUGIN_ROOT}/skills/idea/templates/01-idea.md`. Translate the headings to the user's language.
+If the file already exists, follow "Existing outputs" in `state-rules.md` (revise it, never overwrite the user's edits). Otherwise: write `builder/01-idea.md` from the template `${CLAUDE_PLUGIN_ROOT}/skills/idea/templates/01-idea.md`. Translate the headings to the user's language.
 
 Rules:
 - Use simple terms.

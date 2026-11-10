@@ -24,7 +24,7 @@ If there are uncommitted changes (`git status --porcelain`), say so. Offer to sa
 Ask which point to go back to, unless the user already said. Explain in plain words what will change ("the work from T4 and T5 will be undone; it stays in the history, so we can bring it back"). Get a clear yes. A "yes" already given in the request counts.
 
 Offer two ways (recommend the first):
-1. **Undo the later work** (recommended): `git revert --no-edit <sha-after-target>..HEAD`. This creates new commits that cancel the later ones, so the history stays complete.
+1. **Undo the later work** (recommended): `git revert --no-edit <target-sha>..HEAD`, where `<target-sha>` is the saved point the user chose (the range covers every commit after it). This creates new commits that cancel the later ones, so the history stays complete. Then check it worked: `git diff <target-sha> -- . ':!builder'` must print nothing.
 2. **Restore on a separate branch**: `git switch -c builder/restore-<n> <target-sha>`. The current version stays untouched on the original branch.
 
 ## 3 · Update the state

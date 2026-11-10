@@ -28,7 +28,8 @@ Set `phases.ship.status` to `in_progress` and `currentPhase` to `ship`. Create `
 Delegate to the **`security-auditor`** subagent (Agent tool, `subagent_type: "builder:security-auditor"`). Give it the project root and `builder/02-prd.md` (its "Data & privacy" section says how sensitive the data is). If the subagent tool isn't available, audit yourself following `${CLAUDE_PLUGIN_ROOT}/agents/security-auditor.md`.
 
 Write the findings in the "Audit" table of `06-ship.md`, ordered by priority (critical → low), in plain words, without secret values.
-- **Critical** findings are fixed before deploying (one checkpoint commit per fix: `builder: fix <short title>`).
+- **Critical** findings are fixed before the remote step and before deploying (one checkpoint commit per fix: `builder: fix <short title>`).
+- **A secret found in the code or in the git history** is always critical. A fix commit doesn't remove it from history, so the user must create a new key (rotate it) in that provider and revoke the old one. Put the new key only in environment variables. Don't push anything (the remote step) until the user confirms the old key is revoked.
 - Others need the user's explicit approval to defer (`Status: deferred (approved)`).
 
 If the user asked for the audit only, stop after recording it.

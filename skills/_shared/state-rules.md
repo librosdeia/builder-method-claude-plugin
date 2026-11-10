@@ -56,4 +56,18 @@ After every write to `state.json`, do both of these. This is required, not optio
 
 Before finishing, check that both files exist.
 
-If `state.json` is missing or unreadable, rebuild it from the files in `builder/` (their frontmatter and content), tell the user you did so, and continue.
+## Damaged or missing state
+
+All skills follow this one rule when `builder/state.json` is missing, isn't valid JSON, or holds values outside the lists above:
+
+1. **Minimal repair first**, if the file exists. Fix only what's broken: a syntax error such as a missing comma or bracket, or a value outside the allowed lists mapped to the nearest valid one (e.g. `"finished"` → `"done"`). Keep everything else exactly as it is: `cycle`, tasks, checkpoints, flow results, decisions.
+2. **Rebuild only if repair is impossible.** Copy the damaged file to `builder/state.json.bak` first, then rebuild the state from the `builder/*.md` files (their frontmatter and content) and from `git log` (`builder:` commits tell which tasks are done).
+3. Tell the user in one or two lines what you repaired or rebuilt, and where the backup is.
+4. Update the progress page.
+
+## Existing outputs
+
+The files in `builder/` belong to the user, who may have edited them. When a phase's output file already exists:
+- **Revise it, don't regenerate it.** Read it, show what you would change, and edit it in place. Never overwrite it from the template without asking.
+- Keep each existing flow's `tasks` and `validation` in `state.flows` when you update the flows.
+- If the user explicitly asks to start a phase over, copy the old file to `<name>.bak.md` first.

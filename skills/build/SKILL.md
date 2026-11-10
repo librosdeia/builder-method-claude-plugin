@@ -34,7 +34,7 @@ Delegate to the **`planner`** subagent (Agent tool, `subagent_type: "builder:pla
 **Coverage check (mandatory):** every flow id in `state.flows` must appear in at least one task's `Covers:` line. If one is missing, add or adjust a task before going on. Never show an uncovered plan as finished.
 
 Then:
-1. Write `builder/04-plan.md`.
+1. Write `builder/04-plan.md` (if it already exists, follow "Existing outputs" in `state-rules.md`: revise it, never overwrite the user's edits).
 2. Fill `state.tasks` (`{ id, title, flows, status: "pending", cycle }`), and each flow's `tasks` list.
 3. Explain the plan in a few plain lines: the stack and why, how many tasks there are, and what the user will be able to try first.
 4. **Get approval before setup.** If the user asked for defaults, or already approved, continue.
