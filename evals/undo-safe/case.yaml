@@ -1,0 +1,5 @@
+schema_version: "1.1"
+name: undo-safe
+tags: [helpers, needs-git]
+context:
+  scaffold_script: scaffold.sh
