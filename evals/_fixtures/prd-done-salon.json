@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "pluginVersion": "0.1.0",
+  "project": {
+    "name": "booking-app",
+    "createdAt": "2026-11-10",
+    "hasFrontend": true
+  },
+  "profile": {
+    "codingExperience": "none",
+    "language": "en"
+  },
+  "cycle": 1,
+  "currentPhase": "design",
+  "phases": {
+    "idea": {
+      "status": "done",
+      "review": "reviewed",
+      "steps": {
+        "explore": "done",
+        "scope": "done",
+        "summarize": "done"
+      }
+    },
+    "prd": {
+      "status": "done",
+      "review": "reviewed",
+      "steps": {
+        "clarify": "done",
+        "write": "done",
+        "review": "done",
+        "polish": "done"
+      }
+    },
+    "design": {
+      "status": "not_started"
+    },
+    "build": {
+      "status": "not_started"
+    },
+    "iterate": {
+      "status": "not_started"
+    },
+    "ship": {
+      "status": "not_started"
+    }
+  },
+  "flows": [
+    {
+      "id": "F1",
+      "name": "Book a slot",
+      "acceptance": [
+        "When a client confirms a free slot, then the booking is saved and a confirmation screen shows date, time and service."
+      ],
+      "tasks": [],
+      "validation": "pending"
+    },
+    {
+      "id": "F2",
+      "name": "Cancel a booking",
+      "acceptance": [
+        "When a client cancels more than 24 h before, then the slot becomes free again."
+      ],
+      "tasks": [],
+      "validation": "pending"
+    },
+    {
+      "id": "F3",
+      "name": "See the day's agenda",
+      "acceptance": [
+        "When the owner opens the agenda with the right password, then today's bookings are listed by time."
+      ],
+      "tasks": [],
+      "validation": "pending"
+    }
+  ],
+  "tasks": [],
+  "decisions": {
+    "pending": 0,
+    "total": 0
+  },
+  "debt": []
+}

@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "pluginVersion": "0.1.0",
+  "project": {
+    "name": "csv-cleaner",
+    "createdAt": "2026-11-10",
+    "hasFrontend": false
+  },
+  "profile": {
+    "codingExperience": "none",
+    "language": "en"
+  },
+  "cycle": 1,
+  "currentPhase": "design",
+  "phases": {
+    "idea": {
+      "status": "done",
+      "review": "reviewed",
+      "steps": {
+        "explore": "done",
+        "scope": "done",
+        "summarize": "done"
+      }
+    },
+    "prd": {
+      "status": "done",
+      "review": "reviewed",
+      "steps": {
+        "clarify": "done",
+        "write": "done",
+        "review": "done",
+        "polish": "done"
+      }
+    },
+    "design": {
+      "status": "not_started"
+    },
+    "build": {
+      "status": "not_started"
+    },
+    "iterate": {
+      "status": "not_started"
+    },
+    "ship": {
+      "status": "not_started"
+    }
+  },
+  "flows": [
+    {
+      "id": "F1",
+      "name": "Clean a file",
+      "acceptance": [
+        "When the file has duplicate emails, then the output keeps only the first row of each."
+      ],
+      "tasks": [],
+      "validation": "pending"
+    }
+  ],
+  "tasks": [],
+  "decisions": {
+    "pending": 0,
+    "total": 0
+  },
+  "debt": []
+}
