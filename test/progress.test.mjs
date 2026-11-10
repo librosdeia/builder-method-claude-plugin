@@ -99,3 +99,19 @@ test('not-applicable card states it once and explains why', () => {
   assert.equal(design.match(/Not needed/g).length, 1);
   assert.match(design, /no screens/);
 });
+
+test('an unknown phase status is rejected (page shows the error card)', () => {
+  const evil = structuredClone(midBuild);
+  evil.phases.idea.status = '"><svg onload=alert(1)>';
+  assert.throws(() => renderProgress(evil, 'en'), /unknown status/);
+});
+
+test('hand-edited cycle and counts are coerced to numbers, never injected', () => {
+  const evil = structuredClone(midBuild);
+  evil.cycle = '<b>9</b>';
+  evil.decisions.pending = '<i>2</i>';
+  const html = renderProgress(evil, 'en');
+  assert.doesNotMatch(html, /<b>|<i>/);
+  assert.equal(summarize(evil).cycle, 1);
+  assert.equal(summarize(evil).pendingDecisions, 0);
+});

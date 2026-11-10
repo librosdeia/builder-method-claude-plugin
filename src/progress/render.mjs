@@ -11,6 +11,9 @@ export const PHASES = [
   { id: 'ship', n: 6, file: '06-ship.md', steps: ['audit', 'remote', 'prepare', 'deploy', 'domain', 'record'] },
 ];
 
+const STATUSES = ['not_started', 'in_progress', 'done', 'skipped_generated', 'not_applicable'];
+const int = (v, fallback) => (Number.isInteger(v) && v >= 0 ? v : fallback);
+
 export function escapeHtml(value) {
   return String(value ?? '')
     .replace(/&/g, '&amp;')
@@ -25,7 +28,8 @@ export function summarize(state) {
   const debtPhases = new Set((state.debt || []).map((d) => d.phase));
   const phases = PHASES.map((p) => {
     const ph = state.phases[p.id];
-    if (!ph || typeof ph.status !== 'string') throw new Error(`phase ${p.id} is missing`);
+    if (!ph) throw new Error(`phase ${p.id} is missing`);
+    if (!STATUSES.includes(ph.status)) throw new Error(`unknown status for phase ${p.id}`);
     const steps = ph.steps || {};
     const stepsDone = ph.status === 'done' || ph.status === 'not_applicable'
       ? p.steps.length
@@ -48,17 +52,17 @@ export function summarize(state) {
       covered: flows.filter((f) => (f.tasks || []).length > 0).length,
       validated: flows.filter((f) => f.validation === 'pass').length,
     },
-    pendingDecisions: state.decisions?.pending ?? 0,
-    cycle: state.cycle ?? 1,
+    pendingDecisions: int(state.decisions?.pending, 0),
+    cycle: int(state.cycle, 1) || 1,
   };
 }
 
-function missingText(state, phase, sum, t) {
+function missingText(state, phase, sum, t, cycle) {
   if (sum.status === 'not_applicable') return t.notNeeded;
   if (sum.status === 'done') return '';
   if (sum.status === 'skipped_generated') return t.reviewWith(`/builder:${phase.id}`);
   if (phase.id === 'build' && sum.status === 'in_progress') {
-    const left = (state.tasks || []).filter((k) => k.status !== 'done' && k.cycle === (state.cycle ?? 1)).map((k) => k.id);
+    const left = (state.tasks || []).filter((k) => k.status !== 'done' && k.cycle === cycle).map((k) => k.id);
     if (left.length) return `${t.tasksLeft}: ${left.join(', ')}`;
   }
   if (phase.id === 'iterate' && sum.status === 'in_progress') {
@@ -70,13 +74,13 @@ function missingText(state, phase, sum, t) {
   return `${t.pendingSteps}: ${pending.map((s) => t.steps[s] || s).join(', ')}`;
 }
 
-function card(state, phase, sum, current, t) {
+function card(state, phase, sum, current, t, cycle) {
   const classes = ['card', `st-${sum.status}`];
   if (sum.status === 'not_applicable') classes.push('na');
   if (current) classes.push('current');
   const pct = Math.round((sum.stepsDone / sum.stepsTotal) * 100);
   const showFile = sum.status !== 'not_started' && sum.status !== 'not_applicable';
-  const missing = missingText(state, phase, sum, t);
+  const missing = missingText(state, phase, sum, t, cycle);
   return [
     `<article data-phase="${phase.id}" data-status="${sum.status}" class="${classes.join(' ')}">`,
     `<header><span class="num">${phase.n}</span><div><p class="eyebrow">${escapeHtml(t.phaseOf(phase.n))}</p><h2>${escapeHtml(t.phases[phase.id])}</h2></div></header>`,
@@ -111,7 +115,7 @@ function flowTable(state, t) {
 export function renderProgress(state, lang) {
   const t = strings(lang);
   const s = summarize(state);
-  const cards = PHASES.map((p, i) => card(state, p, s.phases[i], p.id === s.currentPhase, t));
+  const cards = PHASES.map((p, i) => card(state, p, s.phases[i], p.id === s.currentPhase, t, s.cycle));
   return [
     `<header class="top"><p class="brand">${escapeHtml(t.title)}</p>`,
     `<h1>${escapeHtml(state.project?.name)}</h1>`,
