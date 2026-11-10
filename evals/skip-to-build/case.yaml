@@ -1,0 +1,5 @@
+schema_version: "1.1"
+name: skip-to-build
+tags: [build]
+context:
+  scaffold_script: scaffold.sh
