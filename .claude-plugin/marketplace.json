@@ -1,0 +1,17 @@
+{
+  "name": "builder-method",
+  "owner": {
+    "name": "Javier Rayón",
+    "url": "https://librosdeia.com"
+  },
+  "metadata": {
+    "description": "The Builder Method plugin for Claude Code and Cowork."
+  },
+  "plugins": [
+    {
+      "name": "builder",
+      "source": "./",
+      "description": "Guides you from idea to published product with the Builder Method."
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+Builder Method plugin
+Copyright (c) 2026 Libros de ia.com — MIT License (see LICENSE)
+
+This project bundles third-party software:
+
+- rough.js 4.6.6 — https://roughjs.com — Copyright (c) 2019 Preet Shihn — MIT License
+  Vendored in assets/vendor/ and inlined into assets/progress.html.

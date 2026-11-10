@@ -1,0 +1,14 @@
+{
+  "name": "builder",
+  "displayName": "Builder Method",
+  "version": "0.1.0",
+  "description": "Guides you from idea to published product with the Builder Method: idea, PRD, design, build, iterate and ship. Works in Claude Code and Cowork. Companion to the Builder Method book series.",
+  "author": {
+    "name": "Javier Rayón",
+    "url": "https://librosdeia.com"
+  },
+  "homepage": "https://github.com/librosdeia/builder-method-claude-plugin",
+  "repository": "https://github.com/librosdeia/builder-method-claude-plugin",
+  "license": "MIT",
+  "keywords": ["builder-method", "prd", "product", "no-code", "guide", "workflow"]
+}
