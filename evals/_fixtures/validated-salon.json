@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "pluginVersion": "0.1.0",
+  "project": {
+    "name": "booking-app",
+    "createdAt": "2026-11-10",
+    "hasFrontend": true
+  },
+  "profile": {
+    "codingExperience": "none",
+    "language": "en"
+  },
+  "cycle": 1,
+  "currentPhase": "ship",
+  "phases": {
+    "idea": {
+      "status": "done",
+      "review": "reviewed",
+      "steps": {
+        "explore": "done",
+        "scope": "done",
+        "summarize": "done"
+      }
+    },
+    "prd": {
+      "status": "done",
+      "review": "reviewed",
+      "steps": {
+        "clarify": "done",
+        "write": "done",
+        "review": "done",
+        "polish": "done"
+      }
+    },
+    "design": {
+      "status": "done",
+      "review": "reviewed",
+      "steps": {
+        "prototype": "done",
+        "validate": "done",
+        "link": "done"
+      }
+    },
+    "build": {
+      "status": "done",
+      "steps": {
+        "plan": "done",
+        "setup": "done",
+        "build": "done"
+      }
+    },
+    "iterate": {
+      "status": "done",
+      "review": "reviewed",
+      "steps": {
+        "validate": "done",
+        "decisions": "done",
+        "triage": "done",
+        "loop": "skipped"
+      }
+    },
+    "ship": {
+      "status": "not_started"
+    }
+  },
+  "flows": [
+    {
+      "id": "F1",
+      "name": "Book a slot",
+      "acceptance": [
+        "When a client confirms a free slot, then the booking is saved and a confirmation screen shows date, time and service."
+      ],
+      "tasks": [
+        "T2"
+      ],
+      "validation": "pass"
+    },
+    {
+      "id": "F2",
+      "name": "Cancel a booking",
+      "acceptance": [
+        "When a client cancels more than 24 h before, then the slot becomes free again."
+      ],
+      "tasks": [
+        "T3"
+      ],
+      "validation": "pass"
+    },
+    {
+      "id": "F3",
+      "name": "See the day's agenda",
+      "acceptance": [
+        "When the owner opens the agenda with the right password, then today's bookings are listed by time."
+      ],
+      "tasks": [
+        "T4"
+      ],
+      "validation": "pass"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "T1",
+      "title": "Project skeleton",
+      "flows": [],
+      "status": "done",
+      "cycle": 1,
+      "checkpoint": "abc1234"
+    },
+    {
+      "id": "T2",
+      "title": "Booking flow",
+      "flows": [
+        "F1"
+      ],
+      "status": "done",
+      "cycle": 1,
+      "checkpoint": "abc1234"
+    },
+    {
+      "id": "T3",
+      "title": "Cancel flow",
+      "flows": [
+        "F2"
+      ],
+      "status": "done",
+      "cycle": 1,
+      "checkpoint": "abc1234"
+    },
+    {
+      "id": "T4",
+      "title": "Agenda",
+      "flows": [
+        "F3"
+      ],
+      "status": "done",
+      "cycle": 1,
+      "checkpoint": "abc1234"
+    }
+  ],
+  "decisions": {
+    "pending": 0,
+    "total": 1
+  },
+  "debt": []
+}
