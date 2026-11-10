@@ -39,7 +39,7 @@ Symbols per phase status:
 Place `▲ you are here` under the current phase.
 
 Progress detail:
-- In Build: "<done> of <total> tasks · flows covered <covered>/<total>".
+- In Build: "<done> of <total> tasks · flows covered <covered>/<total>". Here *covered* means the flow has at least one task in the plan (its `tasks` list isn't empty), not that it is finished.
 - In Iterate: "flows validated <pass>/<total>".
 - Otherwise: "step <k> of <n>".
 
