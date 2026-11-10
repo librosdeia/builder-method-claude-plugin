@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Builder Method · Progress</title>
+<style>
+:root {
+  --paper: #fbf8f1; --ink: #23201b; --ink-2: #5d574d; --line: #d9d2c3;
+  --accent: #2f5bd3; --accent-t: #e3eafc; --done: #2f8a4c; --done-t: #e2f2e7;
+  --warn: #b5541c; --warn-t: #fbe9dc; --na: #9a958b; --card: #fffdf8;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1b1a17; --ink: #f1ece2; --ink-2: #b9b2a5; --line: #3a372f;
+    --accent: #8fb0ff; --accent-t: #26304a; --done: #7fd39a; --done-t: #1f3327;
+    --warn: #f0a46f; --warn-t: #3d2a1d; --na: #7c776d; --card: #23221e;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #1b1a17; --ink: #f1ece2; --ink-2: #b9b2a5; --line: #3a372f;
+  --accent: #8fb0ff; --accent-t: #26304a; --done: #7fd39a; --done-t: #1f3327;
+  --warn: #f0a46f; --warn-t: #3d2a1d; --na: #7c776d; --card: #23221e;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink);
+  font: 16px/1.5 ui-rounded, "SF Pro Rounded", system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 1040px; margin: 0 auto; padding: 32px 16px 48px; }
+.top .brand { margin: 0; color: var(--ink-2); font-size: 14px; letter-spacing: .08em; text-transform: uppercase; }
+.top h1 { margin: 4px 0 0; font-size: clamp(26px, 5vw, 40px); line-height: 1.15; overflow-wrap: anywhere; }
+.top .meta { margin: 4px 0 24px; color: var(--ink-2); }
+.board { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px 24px; }
+.card { position: relative; padding: 18px 18px 16px; background: var(--card); border-radius: 6px; min-height: 190px; }
+.card > svg.outline { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.card header { display: flex; gap: 12px; align-items: center; }
+.num { flex: none; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center;
+  font-weight: 700; background: var(--accent-t); color: var(--accent); }
+.st-done .num { background: var(--done-t); color: var(--done); }
+.st-skipped_generated .num { background: var(--warn-t); color: var(--warn); }
+.eyebrow { margin: 0; font-size: 12px; color: var(--ink-2); }
+.card h2 { margin: 0; font-size: 20px; }
+.here { margin: 10px 0 0; font-weight: 700; color: var(--accent); }
+.status { margin: 10px 0 6px; font-weight: 600; }
+.bar { height: 8px; border-radius: 4px; background: var(--line); overflow: hidden; }
+.bar span { display: block; height: 100%; background: var(--accent); }
+.st-done .bar span { background: var(--done); }
+.st-skipped_generated .bar span { background: var(--warn); }
+.file, .missing { margin: 8px 0 0; font-size: 14px; color: var(--ink-2); overflow-wrap: anywhere; }
+.file a { color: var(--accent); }
+.debt-badge { display: inline-block; margin: 10px 0 0; padding: 2px 10px; border-radius: 999px; font-size: 13px;
+  font-weight: 600; background: var(--warn-t); color: var(--warn); }
+.card.na { opacity: .55; }
+.card.na .bar { display: none; }
+.card.na .num { background: var(--line); color: var(--na); }
+.loop { position: absolute; margin: 0; color: var(--accent); font-size: 14px; font-weight: 600;
+  left: 50%; top: 100%; transform: translate(-50%, 4px); white-space: nowrap; }
+.totals { display: flex; flex-wrap: wrap; gap: 8px 24px; margin: 48px 0 8px; color: var(--ink-2); }
+.totals p { margin: 0; }
+.flows h3 { margin: 24px 0 8px; }
+.flows table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.flows th, .flows td { text-align: left; padding: 8px 10px 8px 0; border-bottom: 1px solid var(--line); vertical-align: top; overflow-wrap: anywhere; }
+.flows th { color: var(--ink-2); font-weight: 600; font-size: 13px; }
+.v-pass td:last-child { color: var(--done); font-weight: 600; }
+.v-fail td:last-child { color: var(--warn); font-weight: 600; }
+.next { margin-top: 32px; }
+code { font: 14px ui-monospace, SFMono-Regular, Menlo, monospace; background: var(--accent-t); color: var(--accent); padding: 2px 6px; border-radius: 4px; }
+.error { padding: 32px; background: var(--warn-t); border-radius: 8px; }
+.error h1 { margin-top: 0; font-size: 24px; }
+@media (max-width: 760px) {
+  .board { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .loop { position: static; transform: none; text-align: center; }
+  .flows table { font-size: 14px; }
+}
+@media (min-width: 761px) and (max-width: 980px) {
+  .board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+</style>
+</head>
+<body>
+<main aria-live="polite"></main>
+<script id="builder-state" type="application/json">{}</script>
+<script>
+/*@ROUGH@*/
+</script>
+<script>
+(function () {
+/*@RENDERER@*/
+
+  var main = document.querySelector('main');
+  var lang = (navigator.language || 'en').slice(0, 2);
+
+  function draw() {
+    if (!window.rough) return;
+    var css = getComputedStyle(document.documentElement);
+    var ink = css.getPropertyValue('--ink').trim();
+    var accent = css.getPropertyValue('--accent').trim();
+    var cards = document.querySelectorAll('.card');
+    for (var i = 0; i < cards.length; i++) {
+      var c = cards[i];
+      var old = c.querySelector('svg.outline');
+      if (old) old.remove();
+      var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('class', 'outline');
+      svg.setAttribute('aria-hidden', 'true');
+      c.prepend(svg);
+      var w = c.offsetWidth, h = c.offsetHeight;
+      svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+      var current = c.classList.contains('current');
+      var na = c.classList.contains('na');
+      svg.appendChild(rough.svg(svg).rectangle(2, 2, w - 4, h - 4, {
+        stroke: current ? accent : ink, strokeWidth: current ? 2.4 : 1.6,
+        roughness: 1.3, bowing: 1.2, seed: 10 + i, strokeLineDash: na ? [6, 6] : undefined
+      }));
+    }
+  }
+
+  try {
+    var state = JSON.parse(document.getElementById('builder-state').textContent);
+    lang = (state.profile && state.profile.language) || lang;
+    main.innerHTML = renderProgress(state, lang);
+    document.documentElement.lang = String(lang).slice(0, 2);
+    document.title = strings(lang).title + ' · ' + (state.project && state.project.name || '');
+    draw();
+    var t;
+    window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(draw, 120); });
+  } catch (e) {
+    main.innerHTML = renderError(lang);
+  }
+})();
+</script>
+</body>
+</html>
