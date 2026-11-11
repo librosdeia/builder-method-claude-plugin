@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <rect width="1024" height="1024" fill="#2f5bd3"/>
+  <g fill="#fbf8f1" stroke="#2f5bd3" stroke-width="16" stroke-linejoin="round">
+    <!-- step 1 -->
+    <rect x="232" y="640" width="180" height="180" rx="20"/>
+    <!-- step 2 -->
+    <rect x="412" y="640" width="180" height="180" rx="20"/>
+    <rect x="412" y="460" width="180" height="180" rx="20"/>
+    <!-- step 3 -->
+    <rect x="592" y="640" width="180" height="180" rx="20"/>
+    <rect x="592" y="460" width="180" height="180" rx="20"/>
+    <rect x="592" y="280" width="180" height="180" rx="20"/>
+  </g>
+  <!-- flag -->
+  <line x1="682" y1="288" x2="682" y2="130" stroke="#fbf8f1" stroke-width="18" stroke-linecap="round"/>
+  <path d="M690 136 L812 172 L690 214 Z" fill="#f0a46f" stroke="#f0a46f" stroke-width="10" stroke-linejoin="round"/>
+</svg>
